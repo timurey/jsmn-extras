@@ -28,13 +28,20 @@ jsmn_init(&jSMNparser);
 resultCode = jsmn_parse(&jSMNparser, &object[0], STRLEN(object), &jSMNtokens[0], CONFIG_JSMN_NUM_TOKENS);
 toknum = jsmn_find_value(&object[0], &jSMNtokens[0], resultCode, &path);
 ```
-
 ```c
 toknum
 ```
 will contain number of token, specified by 
 ```c
 path
+```
+or you can copy string value by using
+```c
+jsmn_get_string(&object[0], &jSMNtokens[0], resultCode, &path, &string, maxlen)
+```
+and get boolean value
+```c
+jsmn_get_bool(&object[0], &jSMNtokens[0], resultCode, &path, &bool);
 ```
 Licensing
 ----------
