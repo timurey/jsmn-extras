@@ -44,7 +44,7 @@ int test_object(void) {
 	check(parse("{\"a\": 0, \"b\": \"c\"}", 5, 5,
 				JSMN_OBJECT, -1, -1, 2,
 				JSMN_STRING, "a", 1,
-				JSMN_PRIMITIVE, 0,
+				JSMN_PRIMITIVE, "0",
 				JSMN_STRING, "b", 1,
 				JSMN_STRING, "c", 0));
 
@@ -353,7 +353,35 @@ int test_nonstrict(void) {
 				JSMN_PRIMITIVE, "Sep",
 				JSMN_PRIMITIVE, "Year",
 				JSMN_PRIMITIVE, "12"));
+
+	//nested {s don't cause a parse error.
+	js = "\"key {1\": 1234";
+	check(parse(js, 2, 2,
+		              JSMN_STRING, "key {1", 1,
+		              JSMN_PRIMITIVE, "1234"));
+
+
 #endif
+	return 0;
+}
+
+int test_unmatched_brackets(void) {
+	const char *js;
+	js = "\"key 1\": 1234}";
+	check(parse(js, JSMN_ERROR_INVAL, 2));
+	js = "{\"key 1\": 1234";
+	check(parse(js, JSMN_ERROR_PART, 3));
+	js = "{\"key 1\": 1234}}";
+	check(parse(js, JSMN_ERROR_INVAL, 3));
+	js = "\"key 1\"}: 1234";
+	check(parse(js, JSMN_ERROR_INVAL, 3));
+	js = "{\"key {1\": 1234}";
+	check(parse(js, 3, 3,
+				JSMN_OBJECT, 0, 16, 1,
+				JSMN_STRING, "key {1", 1,
+				JSMN_PRIMITIVE, "1234"));
+	js = "{{\"key 1\": 1234}";
+	check(parse(js, JSMN_ERROR_PART, 4));
 	return 0;
 }
 
@@ -373,6 +401,7 @@ int main(void) {
 	test(test_issue_27, "test issue #27");
 	test(test_count, "test tokens count estimation");
 	test(test_nonstrict, "test for non-strict mode");
+	test(test_unmatched_brackets, "test for unmatched brackets");
 	printf("\nPASSED: %d\nFAILED: %d\n", test_passed, test_failed);
 	return (test_failed > 0);
 }
