@@ -25,7 +25,7 @@ typedef struct
 int jsmn_get_value_token(jsmnParserStruct * jsonStruct,  char * pPath);
 int jsmn_get_string(jsmnParserStruct * jsonStruct,  char * pPath, char * string, int maxlen);
 int jsmn_get_bool(jsmnParserStruct * jsonStruct,  char * pPath, int* pointer);
+unsigned int xjsmn_parse(jsmnParserStruct * jsonStruct);
 
-#define xjsmn_parse(jsonParser) jsmn_parse(jsonParser->jSMNparser, jsonParser->data, jsonParser->lengthOfData, jsonParser->jSMNtokens, jsonParser->numOfTokens);
 #endif /* JSMN_PARENT_LINKS */
 #endif /* _JSMN_EXTRAS_H_ */

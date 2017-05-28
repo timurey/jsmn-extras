@@ -258,7 +258,7 @@ int jsmn_get_string(jsmnParserStruct * jsonStruct,  char * pPath, char * string,
    int length =0;
    tokNum = jsmn_get_value_token(jsonStruct, pPath);
 
-   if (tokNum>0)
+   if (tokNum>=0)
    {
 
       length = jsonStruct->jSMNtokens[tokNum].end - jsonStruct->jSMNtokens[tokNum].start;
@@ -272,7 +272,10 @@ int jsmn_get_string(jsmnParserStruct * jsonStruct,  char * pPath, char * string,
          length = 0;
       }
    }
-
+   else 
+   {
+       length = tokNum;  
+   }
    return length;
 }
 
@@ -294,5 +297,11 @@ int jsmn_get_bool(jsmnParserStruct * jsonStruct,  char * pPath, int* pointer)
       }
    }
    return tokNum;
+}
+
+unsigned int xjsmn_parse(jsmnParserStruct * jsonStruct)
+{
+     jsonStruct->resultCode = jsmn_parse(jsonStruct->jSMNparser, jsonStruct->data, jsonStruct->lengthOfData, jsonStruct->jSMNtokens, jsonStruct->numOfTokens);
+     return jsonStruct->resultCode;
 }
 #endif
