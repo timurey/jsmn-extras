@@ -37,7 +37,7 @@ int main(void) {
     printf("Length: %zu\r\n", jsmnParser.lengthOfData);
     printf("Tokens in object: %d\r\n", jsmnParser.resultCode);
 
-    printf("Path 1: "string_path"\r\n");
+    printf("\r\nPath 1: "string_path"\r\n");
     if (jsmn_get_string(&jsmnParser, string_path, &value[0], 64) >= 0)
     {
         printf("Test passed.\r\n");
@@ -48,7 +48,7 @@ int main(void) {
         printf("Test failed.\r\n");
     }
 
-    printf("Path 2: "bool_path"\r\n");
+    printf("\r\nPath 2: "bool_path"\r\n");
     if (jsmn_get_bool(&jsmnParser, bool_path, &boolValue) >= 0)
     {
         printf("Test passed.\r\n");
@@ -59,7 +59,18 @@ int main(void) {
         printf("Test failed.\r\n");
     }
 
-    printf("Path 3: "wrong_path"\r\n");
+    printf("\r\nPath 3: "array_path"\r\n");
+    if (jsmn_get_string(&jsmnParser, array_path, &value[0], 64) >= 0)
+    {
+        printf("Test passed.\r\n");
+        printf("Value 3: %s\r\n", value);
+    }
+    else
+    {
+        printf("Test failed.\r\n");
+    }
+
+    printf("\r\nPath 4: "wrong_path"\r\n");
     if (jsmn_get_string(&jsmnParser, wrong_path, &value[0], 64) <0)
     {
         printf("Test passed.\r\n");

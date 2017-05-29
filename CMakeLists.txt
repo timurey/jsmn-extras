@@ -17,14 +17,14 @@ function(MAKE_TEST ARG_TEST_NAME)
     add_test(NAME ${ARG_TEST_NAME} COMMAND ${ARG_TEST_NAME})
 endfunction()
 
-set(JSMN_SOURCES jsmn.c jsmn_extras.c)
-set(JSMN_PUBLIC_INCLUDES jsmn.h jsmn_extras.h)
+set(JSMN_SOURCES "jsmn.c" "jsmn_extras.c")
+set(JSMN_PUBLIC_INCLUDES "jsmn.h" "jsmn_extras.h")
 
 add_definitions(-DJSMN_PARENT_LINKS)
 
 add_library(${LIBRARY_NAME} STATIC ${JSMN_SOURCES})
-add_executable(simple_example example/simple.c ${LIBRARY_NAME})
-add_executable(jsondump example/jsondump.c ${LIBRARY_NAME})
+add_executable(simple_example example/simple.c ${LIBRARY_NAME} ${JSMN_PUBLIC_INCLUDES})
+add_executable(jsondump example/jsondump.c ${LIBRARY_NAME} ${JSMN_PUBLIC_INCLUDES})
 
 if(NOT DEFINED NO_TESTS)
     MAKE_TEST(jsmn_test test/tests.c)
